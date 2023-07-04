@@ -1,0 +1,14 @@
+node ('slave-node') {
+    stage('Code checkout'){
+        echo 'code checkout'
+        git 'https://github.com/shubhamkushwah123/addressbook-demo'
+    }
+    stage('Code Build'){
+        echo 'Code build.. code test code deploy'
+        sh 'mvn clean package'
+    }
+    stage('Code Deploy'){
+        echo 'Code Deploy'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://172.31.1.182:8080/')], contextPath: 'addressbook-2.0', war: '**/*.war'
+    }
+}
